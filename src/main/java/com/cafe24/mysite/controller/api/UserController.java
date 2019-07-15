@@ -113,8 +113,9 @@ public class UserController {
 			
 			if(validatorResults.isEmpty() == false) {
 				for(ConstraintViolation<UserVo> validatorResult : validatorResults) {
-					String message = messageSource.getMessage("Email.userVo.email", null, LocaleContextHolder.getLocale());
-					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail(message));
+					// String message = messageSource.getMessage("Email.userVo.email", null, LocaleContextHolder.getLocale());
+					
+					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail(validatorResult.getMessage()));
 				}
 			}
 			

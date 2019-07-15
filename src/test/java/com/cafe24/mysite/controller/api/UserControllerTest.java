@@ -139,6 +139,20 @@ public class UserControllerTest {
        .andDo(print())
        .andExpect(jsonPath("$.result", is("fail")));
 	   
+	   // 3. Invalidation in Password :
+	   userVo.setEmail("whddjr2225@naver.com");
+	   userVo.setPassword("Whddjr");
+	   
+	   resultActions = 
+	            mockMvc
+	            .perform(post("/api/user/login")
+	            .contentType(MediaType.APPLICATION_JSON).content(new Gson().toJson(userVo))); // 없는 url
+	            
+	   resultActions
+       .andExpect(status().isBadRequest())
+       .andDo(print())
+       .andExpect(jsonPath("$.result", is("fail")));
+	   
    }
    
 }
