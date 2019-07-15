@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="board">
+
+	<insert id="insert" parameterType="boardvo">
+	<![CDATA[
+	insert into board values
+		 (null,
+		#{title},
+        #{contents},
+        0,
+        date_format(now(),'%Y-%m-%d %h:%i:%s'),
+	]]>
+	
+		<choose>
+			<when test="groupNo != 0">
+			<![CDATA[  
+				#{groupNo},
+				#{orderNo},
+			]]>
+			</when>
+			<when test="groupNo == 0">
+			<![CDATA[  
+		       (select ifnull(max(b.group_no)+1, 1) from board b),		
+		       	1,	
+			]]>
+			</when>
+		</choose>       
+		<choose>
+			<when test="depth != 0">
+			<![CDATA[  
+				#{depth},
+			]]>
+			</when>	
+			<when test="depth == 0">
+			<![CDATA[  
+				0,
+			]]>
+			</when>
+		</choose> 
+	<![CDATA[        
+        #{userNo},
+        'true');
+    ]]>
+	</insert>
+
+	<select id="getList" resultType="boardvo" parameterType="map">
+	       <![CDATA[
+                    SELECT a.name, b.no, b.title, b.contents, b.hit,
+                     b.reg_date as regDate ,b.user_no as userNo,b.group_no as groupNo , b.depth, b.status
+                     FROM user a, board b 
+                     WHERE a.no = b.user_no
+           ]]>
+           <if test="kwd != null">
+           <![CDATA[
+                      AND (title like "%${kwd}%" OR contents like "%${kwd}%")
+           ]]>
+           </if>                    
+           <![CDATA[
+                    ORDER BY group_no DESC, order_no ASC LIMIT #{page}, 10;
+           ]]>
+	</select>
+	
+	<select id="getOne" resultType="boardvo">
+		<![CDATA[    
+		select no, title, contents, hit,
+		 reg_date as regDate, group_no as groupNo, order_no as orderNo, depth, user_no as userNo
+			 from board
+				where no = #{no};
+	    ]]>	
+	</select>
+	<!-- 
+	<delete id="delete" parameterType="Long">
+		<![CDATA[
+			delete from board where no=#{no}		
+		]]>
+	</delete>
+	 -->
+	 <update id="deleteUpdate" parameterType="boardvo">
+		<![CDATA[
+			update board set title='삭제된 글입니다.', status='false'
+			where no = #{no}
+		]]>
+	</update>
+	
+	
+	<update id="update" parameterType="boardvo">
+		<![CDATA[
+			update board set title=#{title}, contents=#{contents}
+			where no = #{no}
+		]]>
+	</update>
+	
+	<update id="upHit" parameterType="Long">
+		<![CDATA[    
+		update board set hit=hit+1 where no = #{no}
+		]]>
+	</update>
+	
+	<update id="updateOrderNo" parameterType="int">
+		<![CDATA[
+		update board set order_no = order_no + 1 where order_no >= #{orderNo}
+		]]>	
+	</update>
+
+	<select id="getListCount" resultType="int">
+		select count(*) from board
+	</select>	
+
+</mapper>
