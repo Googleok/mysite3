@@ -1,10 +1,18 @@
 package com.cafe24.mysite.controller.api;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintViolation;
 import javax.validation.Valid;
+import javax.validation.Validation;
+import javax.validation.Validator;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -24,6 +32,9 @@ import com.cafe24.mysite.vo.UserVo;
 @RestController("userAPIController")
 @RequestMapping("/api/user")
 public class UserController {
+	
+	@Autowired
+	private MessageSource messageSource;
 	
 	@Autowired
 	private UserService userService;
@@ -68,4 +79,47 @@ public class UserController {
 		
 		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(userVo));
 	}
+	
+	@PostMapping(value = "/login")
+	public ResponseEntity<JSONResult> login(@RequestBody UserVo userVo){
+		
+		Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+		/*
+		 * 이게 왜 Set이냐
+		 * validator가 두개 달린 필드도 존재하기 때문에
+		 * 순서없이 담는다.
+		 */
+//		Set<ConstraintViolation<UserVo>> validatorResults = validator.validateProperty(userVo, "email");
+		
+//		if(validatorResults.isEmpty() == false) {
+//			for(ConstraintViolation<UserVo> validatorResult : validatorResults) {
+//				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail(validatorResult.getMessage()));
+//			}
+//		}
+		
+		List<String> checkFields = new ArrayList<String>();
+		checkFields.add("email");
+		checkFields.add("password");
+		ResponseEntity<JSONResult> result = nonValid(validator, userVo, checkFields, messageSource);
+		
+		
+		
+		return result == null ? ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(userVo)) : result;
+	}
+	
+	public static ResponseEntity<JSONResult> nonValid(Validator validator ,UserVo userVo, List<String> checkFields, MessageSource messageSource) {
+		for (String checkField : checkFields) {
+			Set<ConstraintViolation<UserVo>> validatorResults = validator.validateProperty(userVo, checkField);
+			
+			if(validatorResults.isEmpty() == false) {
+				for(ConstraintViolation<UserVo> validatorResult : validatorResults) {
+					String message = messageSource.getMessage("Email.userVo.email", null, LocaleContextHolder.getLocale());
+					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(JSONResult.fail(message));
+				}
+			}
+			
+		}
+		return null;
+	}
+	
 }

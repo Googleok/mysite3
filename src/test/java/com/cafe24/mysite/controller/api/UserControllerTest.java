@@ -48,7 +48,7 @@ public class UserControllerTest {
 	   userVo.setName("박종억");
 	   userVo.setEmail("whddjr2225@naver.com");
 	   userVo.setPassword("Whddjr12");
-	   userVo.setGender("male");
+	   userVo.setGender("MALE");
 	   
 	   ResultActions resultActions = 
 	            mockMvc
@@ -63,7 +63,7 @@ public class UserControllerTest {
 	   userVo.setName("박");
 	   userVo.setEmail("whddjr2225@naver.com");
 	   userVo.setPassword("Whddjr12");
-	   userVo.setGender("male");
+	   userVo.setGender("MALE");
 	   
 	   resultActions = 
 	            mockMvc
@@ -79,7 +79,7 @@ public class UserControllerTest {
 	   userVo.setName("박종억");
 	   userVo.setEmail("whddjr2225@naver.com");
 	   userVo.setPassword("Wh");
-	   userVo.setGender("male");
+	   userVo.setGender("MALE");
 	   
 	   resultActions = 
 	            mockMvc
@@ -90,6 +90,55 @@ public class UserControllerTest {
        .andExpect(status().isBadRequest())
        .andDo(print())
        .andExpect(jsonPath("$.result", is("fail")));
+	   
+	   // 4. Invalidation in Gender :
+	   userVo.setName("박종억");
+	   userVo.setEmail("whddjr2225@naver.com");
+	   userVo.setPassword("Whddjr129");
+	   userVo.setGender("malef");
+	   
+	   resultActions = 
+	            mockMvc
+	            .perform(post("/api/user/join")
+	            .contentType(MediaType.APPLICATION_JSON).content(new Gson().toJson(userVo))); // 없는 url
+	            
+	   resultActions
+       .andExpect(status().isBadRequest())
+       .andDo(print())
+       .andExpect(jsonPath("$.result", is("fail")));
+   }
+   
+   @Test
+   public void testUserLogin() throws Exception{
+	   UserVo userVo = new UserVo();
+	   
+	   // 1. Normal User's Login Data
+	   userVo.setEmail("whddjr2225@naver.com");
+	   userVo.setPassword("Whddjr129");
+	   
+	   ResultActions resultActions = 
+	            mockMvc
+	            .perform(post("/api/user/login")
+	            .contentType(MediaType.APPLICATION_JSON).content(new Gson().toJson(userVo))); // 없는 url
+	            
+	   resultActions
+       .andExpect(status().isOk())
+       .andDo(print());
+	   
+	   // 2. Invalidation in Email :
+	   userVo.setEmail("whddjr222");
+	   userVo.setPassword("Whddjr12");
+	   
+	   resultActions = 
+	            mockMvc
+	            .perform(post("/api/user/login")
+	            .contentType(MediaType.APPLICATION_JSON).content(new Gson().toJson(userVo))); // 없는 url
+	            
+	   resultActions
+       .andExpect(status().isBadRequest())
+       .andDo(print())
+       .andExpect(jsonPath("$.result", is("fail")));
+	   
    }
    
 }
