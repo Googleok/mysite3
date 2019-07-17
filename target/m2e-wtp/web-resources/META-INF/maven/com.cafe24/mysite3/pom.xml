@@ -10,11 +10,38 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<org.springframework-version>4.3.1.RELEASE</org.springframework-version>
+		<org.springsecurity-version>4.2.0.RELEASE</org.springsecurity-version>
 		<jcloverslf4j.version>1.7.6</jcloverslf4j.version>
 		<logback.version>1.1.1</logback.version>
 	</properties>
 
 	<dependencies>
+
+		<!-- Spring Security -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
+			<version>${org.springsecurity-version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+			<version>${org.springsecurity-version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-taglibs</artifactId>
+			<version>${org.springsecurity-version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-acl</artifactId>
+			<version>${org.springsecurity-version}</version>
+		</dependency>
+
 		<!-- Spring Core -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -29,14 +56,14 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		
+
 		<!-- Spring Web -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-web</artifactId>
 			<version>${org.springframework-version}</version>
 		</dependency>
-		
+
 		<!-- Spring Web MVC -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -91,7 +118,7 @@
 			<artifactId>mybatis-spring</artifactId>
 			<version>1.2.0</version>
 		</dependency>
-		
+
 		<!-- jackson -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
@@ -117,7 +144,7 @@
 			<artifactId>validation-api</artifactId>
 			<version>1.0.0.GA</version>
 		</dependency>
-		
+
 		<!-- hibernate -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -131,7 +158,7 @@
 			<artifactId>commons-fileupload</artifactId>
 			<version>1.2.1</version>
 		</dependency>
-		
+
 		<!-- commons-io -->
 		<dependency>
 			<groupId>commons-io</groupId>
@@ -146,13 +173,13 @@
 			<version>2.9.9</version>
 		</dependency>
 
-		<!-- Swagger --> 			
+		<!-- Swagger -->
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger2</artifactId>
 			<version>2.6.1</version>
 		</dependency>
-		
+
 		<!-- springfox-swagger-ui -->
 		<dependency>
 			<groupId>io.springfox</groupId>
@@ -166,30 +193,30 @@
 			<artifactId>spring-test</artifactId>
 			<version>${org.springframework-version}</version>
 		</dependency>
-		
+
 		<!-- junit -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.12</version>
 		</dependency>
-		
+
 		<!-- mockito-all -->
 		<dependency>
-		    <groupId>org.mockito</groupId>
-		    <artifactId>mockito-all</artifactId>
-		    <version>1.10.19</version>
-		    <scope>test</scope>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>1.10.19</version>
+			<scope>test</scope>
 		</dependency>
-	
+
 		<!-- hamcrest-all -->
 		<dependency>
-		    <groupId>org.hamcrest</groupId>
-		    <artifactId>hamcrest-all</artifactId>
-		    <version>1.3</version>
-		    <scope>test</scope>
+			<groupId>org.hamcrest</groupId>
+			<artifactId>hamcrest-all</artifactId>
+			<version>1.3</version>
+			<scope>test</scope>
 		</dependency>
-		
+
 		<!-- jsonpath -->
 		<dependency>
 			<groupId>com.jayway.jsonpath</groupId>
@@ -197,13 +224,13 @@
 			<version>2.4.0</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<!-- GSon -->
 		<dependency>
-		    <groupId>com.google.code.gson</groupId>
-		    <artifactId>gson</artifactId>
-		    <version>2.8.5</version>
-		    <scope>test</scope>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.8.5</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 	<profiles>

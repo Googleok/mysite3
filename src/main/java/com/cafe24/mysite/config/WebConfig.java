@@ -16,7 +16,7 @@ import com.cafe24.config.web.SwaggerConfig;
 @EnableWebMvc
 @EnableAspectJAutoProxy
 @ComponentScan(basePackages={"com.cafe24.mysite.controller"})
-@Import({MVCConfig.class, SecurityConfig.class, MessageConfig.class, FileUploadConfig.class, SwaggerConfig.class})
+@Import({MVCConfig.class,/* SecurityConfig.class,*/ MessageConfig.class, FileUploadConfig.class, SwaggerConfig.class})
 public class WebConfig {
 	
 	

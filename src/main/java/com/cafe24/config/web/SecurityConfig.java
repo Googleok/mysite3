@@ -12,8 +12,8 @@ import com.cafe24.security.AuthInterceptor;
 import com.cafe24.security.AuthLoginInterceptor;
 import com.cafe24.security.AuthLogoutInterceptor;
 import com.cafe24.security.AuthUserHandlerMethodArgumentResolver;
-
-@Configuration
+// Spring Security로 대체
+//@Configuration
 public class SecurityConfig extends WebMvcConfigurerAdapter{
 	//
 	// Argument Resolver
