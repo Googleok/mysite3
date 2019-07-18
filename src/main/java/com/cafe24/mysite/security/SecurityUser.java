@@ -7,18 +7,31 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 public class SecurityUser implements UserDetails{
 
+	// security fields
 	private Collection<? extends GrantedAuthority> authorities;
-	private String username;	// Email (Principal) (biz name:email)
-	private String password;	// credential
+	private String username;	// credential(email)
+	private String password;	// credential(password)
 	
-	// etc
+	
+	
+	// 사용자를 구별하기 위한 중요 데이터 (principal)
+	private Long no;
 	private String name;		// 성명 (service data)
 
+	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return authorities;
 	}
 	
+	public Long getNo() {
+		return no;
+	}
+
+	public void setNo(Long no) {
+		this.no = no;
+	}
+
 	public String getName() {
 		return name;
 	}

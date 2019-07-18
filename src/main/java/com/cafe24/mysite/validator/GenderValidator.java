@@ -8,7 +8,7 @@ import com.cafe24.mysite.validator.constraints.ValidGender;
 
 public class GenderValidator implements javax.validation.ConstraintValidator<ValidGender, String>{
 
-	private Pattern pattern = Pattern.compile("MALE|FEMALE|NONE");
+	private Pattern pattern = Pattern.compile("male|female");
 	
 	@Override
 	public void initialize(ValidGender constraintAnnotation) {

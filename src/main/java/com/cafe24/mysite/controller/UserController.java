@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.cafe24.mysite.security.AuthUser;
+import com.cafe24.mysite.security.SecurityUser;
 import com.cafe24.mysite.service.UserService;
 import com.cafe24.mysite.vo.UserVo;
-import com.cafe24.security.Auth;
-import com.cafe24.security.AuthUser;
 
 @Controller
 @RequestMapping("/user")
@@ -53,11 +53,10 @@ public class UserController {
 		return "/user/login";
 	}
 
-	@Auth
 	@RequestMapping(value = "/update", method = RequestMethod.GET)
-	public String update(@AuthUser UserVo authUser, Model model) {
+	public String update(@AuthUser SecurityUser securityUser, Model model) {
 
-		model.addAttribute("authUser", userService.getUser(authUser.getNo()));
+		model.addAttribute("authUser", userService.getUser(securityUser.getNo()));
 		
 		return "/user/update";
 	}

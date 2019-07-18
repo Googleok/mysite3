@@ -23,11 +23,14 @@ public class UserVo {
 	// 비밀번호 정규식 (최소 8자리에 대문자 1자리 소문자 한자리 숫자 한자리)
 	@Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$", message = "잘못된 비밀번호 형식입니다.")
 	private String password;
-	
+	 
 	@ValidGender
 	private String gender;
 	
+	private String role;
+	
 	private String joinDate;
+	
 	
 	public UserVo() {
 		
@@ -37,15 +40,15 @@ public class UserVo {
 		this.email = email;
 		this.password = password;
 	}
-	
-	
-	
-	public UserVo(Long no, String name, String email, String password, String gender, String joinDate) {
+
+	public UserVo(Long no, String name, String email, String password, String gender, String role, String joinDate) {
+		super();
 		this.no = no;
 		this.name = name;
 		this.email = email;
 		this.password = password;
 		this.gender = gender;
+		this.role = role;
 		this.joinDate = joinDate;
 	}
 
@@ -79,15 +82,27 @@ public class UserVo {
 	public void setGender(String gender) {
 		this.gender = gender;
 	}
+	
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
 	public String getJoinDate() {
 		return joinDate;
 	}
 	public void setJoinDate(String joinDate) {
 		this.joinDate = joinDate;
 	}
+
 	@Override
 	public String toString() {
 		return "UserVo [no=" + no + ", name=" + name + ", email=" + email + ", password=" + password + ", gender="
-				+ gender + ", joinDate=" + joinDate + "]";
+				+ gender + ", role=" + role + ", joinDate=" + joinDate + "]";
 	}
+
+	
 }

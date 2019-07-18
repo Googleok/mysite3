@@ -33,7 +33,7 @@
          
          //ajax 통신
          $.ajax({
-            url:"/mysite2/user/api/checkemail?email="+email,
+            url:"/mysite3/api/user/checkemail?email="+email,
             type:"get",
             dataType:"json",
             data:"",
@@ -105,7 +105,7 @@
 										
 					<fieldset>
 						<legend>성별</legend>
-						<label>여</label> <form:radiobutton path="gender" value="femal" checked="checked" />
+						<label>여</label> <form:radiobutton path="gender" value="female" checked="checked" />
 						<label>남</label> <form:radiobutton path="gender" value="male" />
 					</fieldset>
 					

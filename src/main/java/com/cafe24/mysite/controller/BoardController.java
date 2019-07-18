@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.cafe24.mysite.security.AuthUser;
+import com.cafe24.mysite.security.SecurityUser;
 import com.cafe24.mysite.service.BoardService;
 import com.cafe24.mysite.vo.BoardVo;
 import com.cafe24.mysite.vo.UserVo;
-import com.cafe24.security.Auth;
-import com.cafe24.security.AuthUser;
 
 @Controller
 @RequestMapping("/board")
@@ -40,7 +40,6 @@ public class BoardController {
 		return "/board/list";
 	}
 	
-	@Auth(role=Auth.Role.USER)	// 인증 annotation
 	@RequestMapping(value = "/write", method = RequestMethod.GET)
 	public String write(
 			@RequestParam(value="no", required=true, defaultValue="")Long no,
@@ -58,10 +57,10 @@ public class BoardController {
 	@RequestMapping(value = "/write", method = RequestMethod.POST)
 	public String write(
 			@ModelAttribute BoardVo boardVo,
-			@AuthUser UserVo authUser
+			@AuthUser SecurityUser securityUser
 			) {
 		
-		boolean result = boardService.write(boardVo, authUser);
+		boolean result = boardService.write(boardVo, securityUser);
 		if (result) {
 			System.out.println("insert: success");
 		}
@@ -75,7 +74,6 @@ public class BoardController {
 		return "/board/view";
 	}
 
-	@Auth(role=Auth.Role.USER)	// 인증 annotation
 	@RequestMapping(value = "/delete/{no}", method = RequestMethod.GET)
 	public String delete(
 			@PathVariable(value="no")Long no,
@@ -87,7 +85,6 @@ public class BoardController {
 		return "redirect:/board/list?page="+page+"&kwd="+kwd;
 	}
 
-	@Auth(role=Auth.Role.USER)	// 인증 annotation
 	@RequestMapping(value = "/modify/{no}", method = RequestMethod.GET)
 	public String modify(@PathVariable(value="no")Long no, Model model) {
 		BoardVo vo = boardService.getOne(no);

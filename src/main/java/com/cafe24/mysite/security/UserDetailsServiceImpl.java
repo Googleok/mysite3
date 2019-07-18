@@ -1,10 +1,8 @@
 package com.cafe24.mysite.security;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -26,16 +24,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		SecurityUser securityUser = new SecurityUser();
 
 		if( userVo != null ) {
-			// mock Data
-			// String role = userVo.getRole();
-			String role = "ROLE_USER";
+			securityUser.setNo(userVo.getNo());
 			securityUser.setName(userVo.getName());
 			securityUser.setUsername(userVo.getEmail());
 			securityUser.setPassword(userVo.getPassword());
-
-			List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-			authorities.add(new SimpleGrantedAuthority(role));
-			securityUser.setAuthorities(authorities);
+			securityUser.setAuthorities(Arrays.asList(new SimpleGrantedAuthority(userVo.getRole())));
 		}
 		
 		return securityUser;
