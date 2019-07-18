@@ -13,7 +13,11 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
+import com.cafe24.mysite.security.CustomUrlAuthenticationSuccessHandler;
 
 /*
  * 
@@ -97,22 +101,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 //			.antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")
 //			.antMatchers("/admin/**").hasRole("ADMIN")
 			.antMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
+			.antMatchers("/admin/upload", "/admin/delete/").hasAuthority("ROLE_ADMIN")
+			
 
 			// 모두 허용
 //			.antMatchers("/**").permitAll();
 //			.anyRequest("/**").permitAll()
-			.anyRequest().permitAll()
-		
+			.anyRequest().permitAll();
+			
 		// ! Temporary CSRF 설정
 		//	http.csrf().disable();
 		
 		// 2. 로그인 설정
-			.and()
+			http
 			.formLogin()
 			.loginPage("/user/login")
 			.loginProcessingUrl("/user/auth")		//form 에 액션이랑 맞아야한다.
 			.failureUrl("/user/login?result=fail")
-			.defaultSuccessUrl("/", true)
+//			.defaultSuccessUrl("/", true)
+			.successHandler(authenticationSuccessHandler())
 			.usernameParameter("email")
 			.passwordParameter("password")
 	
@@ -126,9 +133,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		// 4. Access Denial Handler
 			.and()
 			.exceptionHandling()
-			.accessDeniedPage("/WEB-INF/views/error/403.jsp");
+			.accessDeniedPage("/WEB-INF/views/error/403.jsp")
 			
-		
+		// 5. RememberMe
+			.and()
+			.rememberMe()
+			.key("mysite3")
+			.rememberMeParameter("remember-me");
+			
 			
 	}
 
@@ -137,10 +149,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	 */
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(userDetailsService)
+		auth
+		.userDetailsService(userDetailsService)
 		.and()
 		.authenticationProvider(authenticationProvider());
 		
+	}
+	
+	// AuthenticationSuccessHandler 등록
+	public AuthenticationSuccessHandler authenticationSuccessHandler() {
+		return new CustomUrlAuthenticationSuccessHandler(); 
 	}
 	
 	@Bean

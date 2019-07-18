@@ -1,5 +1,7 @@
 package com.cafe24.mysite.dto;
 
+import com.cafe24.mysite.security.SecurityUser;
+
 public class JSONResult {
 
 	private String result;	// success, fail

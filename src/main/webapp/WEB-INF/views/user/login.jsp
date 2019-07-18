@@ -16,6 +16,32 @@ var csrfParameter = $('meta[name="_csrf_parameter"]').attr('content');
 var csrfHeader = $('meta[name="_csrf_header"]').attr('content');
 var csrfToken = $('meta[name="_csrf"]').attr('content');
 console.log(csrfParameter, csrfHeader, csrfToken);
+
+$(function () {
+	$('#login-form').submit(function (event) {
+		event.preventDefault();
+		var params = "email=" +$('#email').val() + "&password=" + $('#password').val();
+		$.ajaxSetup({
+	          beforeSend: function(xhr) {
+	          xhr.setRequestHeader(csrfHeader, csrfToken);
+	          }  
+	    });
+		$.ajax({
+	         url: "${pageContext.request.contextPath }/user/auth",
+	         type: "post",
+	         dataType: "json",
+	         data: params,
+	         success: function(response){
+	            console.log(response);
+	         },
+	         error: function(jqXHR, status, e){
+	            console.error(status + ":" + e);
+	         }
+	      });
+		
+	})
+});
+
 </script>
 </head>
 <body>
@@ -28,8 +54,9 @@ console.log(csrfParameter, csrfHeader, csrfToken);
 					<label class="block-label" for="email">이메일</label>
 					<input id="email" name="email" type="text" value="">
 					<label class="block-label" >패스워드</label>
-					<input name="password" type="password" value="">
-					
+					<input id="password" name="password" type="password" value="">
+					<label class="block-label" >자동로그인</label>
+					<input name="remember-me" type="checkbox">
 					<c:choose>
 						<c:when test="${result eq 'fail'}">
 							<p>
