@@ -25,6 +25,7 @@ import com.cafe24.mysite.security.CustomUrlAuthenticationSuccessHandler;
 
 	 1. ChannelProcessingFilter
 	 2. SecurityContextPersistenceFilter		( auto-config default, V )
+	 	=> SecurityContext를 관리하는 필터
 	 3. ConcurrentSessionFilter
 	 4. LogoutFilter							( auto-config default, V )
 	 5. UsernamePasswordAuthenticationFilter	( auto-config default, V 개중요)
@@ -36,6 +37,7 @@ import com.cafe24.mysite.security.CustomUrlAuthenticationSuccessHandler;
 	11. JaasApiIntegrationFilter
 	12. RememberMeAuthenticationFilter			(					   V )
 	13. AnonymousAuthenticationFilter			( auto-config default )
+		=> 이 필터가 호출되는 시점까지 사용자가 아직 인증을 받지 못했다면 요청 관련 인증 토큰에서 사용자가 익명 사용자로 나타나게 됨
 	14. SessionManagementFilter					( auto-config default )
 	15. ExceptionTranslationFilter				( auto-config default, V )
 	16. FilterSecurityInterceptor				( auto-config default, V )	
@@ -45,7 +47,7 @@ import com.cafe24.mysite.security.CustomUrlAuthenticationSuccessHandler;
  */
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter{
+public class AppSecurityConfig extends WebSecurityConfigurerAdapter{
 
 	@Autowired
 	private UserDetailsService userDetailsService;
@@ -105,8 +107,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 			
 
 			// 모두 허용
-//			.antMatchers("/**").permitAll();
-//			.anyRequest("/**").permitAll()
+//         	.antMatchers("/**").permitAll();
+//		    .anyRequest("/**").permitAll()
 			.anyRequest().permitAll();
 			
 		// ! Temporary CSRF 설정
@@ -118,7 +120,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 			.loginPage("/user/login")
 			.loginProcessingUrl("/user/auth")		//form 에 액션이랑 맞아야한다.
 			.failureUrl("/user/login?result=fail")
-//			.defaultSuccessUrl("/", true)
+		 // .defaultSuccessUrl("/", true)
 			.successHandler(authenticationSuccessHandler())
 			.usernameParameter("email")
 			.passwordParameter("password")
