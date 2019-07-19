@@ -130,6 +130,7 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter{
 			.logout()
 			.logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
 			.logoutSuccessUrl("/")
+			.deleteCookies("JSESSIONID")
 			.invalidateHttpSession(true)
 		
 		// 4. Access Denial Handler

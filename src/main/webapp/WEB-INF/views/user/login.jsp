@@ -18,7 +18,7 @@ var csrfToken = $('meta[name="_csrf"]').attr('content');
 console.log(csrfParameter, csrfHeader, csrfToken);
 
 $(function () {
-	$('#login-form').submit(function (event) {
+	$('#login-form2').submit(function (event) {
 		event.preventDefault();
 		var params = "email=" +$('#email').val() + "&password=" + $('#password').val();
 		$.ajaxSetup({

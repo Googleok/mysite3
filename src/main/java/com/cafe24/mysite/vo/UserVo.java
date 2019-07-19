@@ -27,7 +27,7 @@ public class UserVo {
 	@ValidGender
 	private String gender;
 	
-	private String role;
+	private String role = "ROLE_USER";
 	
 	private String joinDate;
 	
